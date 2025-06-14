@@ -1,0 +1,15 @@
+google-generativeai
+openai>=1.0.0
+anthropic
+pypdf
+pyyaml
+numpy
+pandas
+matplotlib
+scikit-learn
+tensorflow
+re
+yaml
+os
+subprocess
+sys

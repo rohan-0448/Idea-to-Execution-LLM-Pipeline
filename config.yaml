@@ -1,0 +1,20 @@
+# configuration file 
+
+---
+name: idea-to-execution-ip
+version: 1.0
+
+llm_model: 'your-model-name-here'
+api_key: 'your-api-key-here'
+attempt_name: 'name-your-run-here'
+user_idea_path: 'path-to-user-idea-here'
+paper_paths:
+  - 'path-to-paper-here'
+  - 'path-to-paper-here'
+
+file_paths:
+  training_data: 'path-to-training-data'
+  output_directory: 'path-to-saved-models-folder'
+  temp_numin_results_path: 'path-to-saved-results-csv-format'
+
+...
