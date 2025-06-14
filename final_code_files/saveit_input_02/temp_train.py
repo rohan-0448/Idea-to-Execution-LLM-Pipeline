@@ -1,0 +1,160 @@
+# import libraries
+
+from numin import NuminAPI # library to download data and make submissions to the Numin platform
+import pandas as pd # data manipulation library
+import numpy as np # numerical computation library
+from tqdm import tqdm # progress bar library
+import torch # deep learning library
+import torch.nn as nn # neural network library
+import os # to acess files and directories
+import time # to measure time
+from torch.utils.data import Dataset, DataLoader # to create custom datsets and dataloaders
+from torch.distributions import Normal # Import the Normal distribution
+from sklearn.preprocessing import StandardScaler
+
+# init numin object
+# napi = NuminAPI(api_key= 'YOUR_API_KEY') # Replace with your actual API key
+
+# download data, commented out if data already exists
+
+# data = napi.get_data(data_type="training")  # BytesIO
+
+# file_path = "training_data.zip"  # Change the file name as needed
+
+# with open(file_path, 'wb') as f:
+#     f.write(data.getbuffer())
+
+# print(f"Data downloaded and saved to {file_path}")
+
+# import data
+
+training_data_fp = './training_data/df_val_31-May-2024.csv' # path to where the data is stored
+df = pd.read_csv(training_data_fp) # read data into a pandas datframe
+df = df.drop('id', axis=1) # drop the id column
+df.dropna(inplace=True) # drop rows with missing values in the training data
+
+X = df.iloc[:, :-2].values.tolist() # separate features out from the labels
+y = df.iloc[:, -1].values.tolist() # store labels
+# No conversion to classification. Keep as regression target.
+
+# Data scaling
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
+
+
+# define constants
+
+DEVICE = torch.device('mps') if torch.backends.mps.is_available() else torch.device('cpu') # set device to cuda if available
+INPUT_SIZE = len(X[0]) # get input size from the data
+print(INPUT_SIZE)
+HIDDEN_SIZE = 100 # size of the hidden layer
+OUTPUT_SIZE = 2  # Mean and standard deviation for Normal distribution
+
+
+
+# define Dataset class
+
+class NuminDataset(Dataset):
+
+    def __init__(self, data, labels):
+        self.data = torch.tensor(data, dtype=torch.float) # features used for training
+        self.labels = torch.tensor(labels, dtype=torch.float) # labels used for training, changed to float for regression
+
+    def __len__(self):
+        return len(self.labels) # return the number of samples in the dataset
+
+    def __getitem__(self, idx):
+        sample = self.data[idx] # get sample at index 'idx'
+        label = self.labels[idx] # get label at index 'idx'
+        return sample, label # return sample and label
+
+
+# define LSTM with distributional output
+
+class LSTMDistributionOutput(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(LSTMDistributionOutput, self).__init__()
+        self.hidden_size = hidden_size
+        self.lstm = nn.LSTM(input_size, hidden_size, batch_first=True)
+        self.linear = nn.Linear(hidden_size, output_size)  # Output mean and stddev
+
+    def forward(self, x):
+        # Initialize hidden state and cell state
+        h0 = torch.zeros(1, x.size(0), self.hidden_size).to(x.device)
+        c0 = torch.zeros(1, x.size(0), self.hidden_size).to(x.device)
+
+        # Forward propagate LSTM
+        out, _ = self.lstm(x, (h0, c0))  # out: tensor of shape (batch_size, seq_length, hidden_size)
+
+        # Decode the hidden state of the last time step
+        out = self.linear(out[:, -1, :])  # shape: (batch_size, output_size)
+        mean = out[:, 0] # Extract predicted mean
+        std = torch.exp(out[:, 1]) # Extract predicted standard deviation, use exp to ensure positivity
+
+        return mean, std
+
+# Instantiate the model
+lstm_dist = LSTMDistributionOutput(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE).to(DEVICE)
+
+# instantiate dataset and dataloader
+
+dataset = NuminDataset(X, y)
+dataloader = DataLoader(dataset, batch_size=4, shuffle=True) # Added shuffle
+
+
+
+# Loss function
+def negative_log_likelihood(mean, std, target):
+    """
+    Calculates the negative log-likelihood loss for a normal distribution.
+
+    Args:
+        mean (torch.Tensor): Predicted mean of the normal distribution.
+        std (torch.Tensor): Predicted standard deviation of the normal distribution.
+        target (torch.Tensor): Actual target values.
+
+    Returns:
+        torch.Tensor: The negative log-likelihood loss.
+    """
+    dist = Normal(mean, std)
+    log_prob = dist.log_prob(target)
+    return -log_prob.mean()
+
+# Optimizer
+optimizer = torch.optim.Adam(lstm_dist.parameters(), lr=0.001)  # Reduced learning rate
+
+
+# training loop
+
+NUM_EPOCHS = 30 # number of training epochs
+n_steps = len(dataloader) # number of steps in each epoch
+
+lstm_dist.to(DEVICE) # Move model to device before training
+
+for epoch in tqdm(range(NUM_EPOCHS)): # iterate through the dataset for NUM_EPOCHS
+    for i, (features, labels) in enumerate(dataloader):
+
+        inputs = features.unsqueeze(1).to(DEVICE) # features are sent as inputs, added unsqueeze for sequence dimension
+        labels = labels.to(DEVICE)
+
+        # forward pass
+        mean, std = lstm_dist(inputs) # get model predictions
+        loss = negative_log_likelihood(mean, std, labels) # calculate loss
+
+        # backward pass
+        optimizer.zero_grad() # zero out the gradients
+        loss.backward() # backpropagate the loss
+        optimizer.step() # update the weights
+
+    print(f'Epoch [{epoch+1}/{NUM_EPOCHS}], Loss: {loss.item():.4f}')
+
+
+# save model to saved_models directory
+
+model_fp = './saved_models/lstm_dist.pth' # path to save the model
+
+if not os.path.exists('./saved_models'):
+    os.makedirs('./saved_models')
+
+torch.save(lstm_dist.state_dict(), model_fp) # save the model
+print(f"Model saved to {model_fp}") # print message to confirm model has been saved
