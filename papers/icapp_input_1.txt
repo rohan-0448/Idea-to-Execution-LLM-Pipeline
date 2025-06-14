@@ -1,0 +1,13 @@
+Text: Combine Monte Carlo Tree Diffusion (MCTD) with Autonomy of Experts (AoE) for Enhanced Algorithmic Trading.
+
+Adapt MCTD's planning capabilities by integrating AoE's expert selection. Here's how:
+
+Expert Trading Strategies: View different trading strategies as experts. Each expert assesses its suitability based on current market conditions. MCTD guides the overall planning process, while AoE selects the best strategies (experts) to incorporate at each stage.
+
+Dynamic Action Space: Use MCTD to define the trading environment and actions.  AoE selects the most appropriate action space. It will adaptively adjust the trading strategy based on each expert's capabilities.
+
+Efficient Search: MCTD's tree search, which uses "jumpy denoising" to quickly evaluate trajectories, is made more efficient by AoE. It makes sure that only the most promising experts have their proposed actions evaluated. This reduces computational cost.
+
+Adaptive Risk: AoE's expert self-evaluation integrates risk management. It will allow strategies to opt out based on their risk tolerance.
+
+This hybrid approach combines MCTD's planning with AoE's adaptive expert selection. It leads to more robust and efficient algorithmic trading strategies.

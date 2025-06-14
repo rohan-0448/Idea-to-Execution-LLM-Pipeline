@@ -1,0 +1,47 @@
+Okay, here's a methodology incorporating the provided information on dataset context, following the systematic approach you requested.
+
+**1. Introduce Method**
+
+We will incorporate a specific dataset context into our deep reinforcement learning framework for portfolio management. Our data is split into training and testing sets. The training set needs to be preprocessed by converting targets from [-1,1] to [0,4] through a simple transform.
+
+**2. Establish Connections**
+
+*   **Data Source:** The primary data source is the Numin Platform, accessed via API calls. This provides real-world financial data, crucial for training and evaluating the RL agent.
+*   **Data Types:** The data consists of: a string-based stock ID, float values representing features relevant to the stock, and (in the training data) an integer-valued target variable derived from `score_10`.
+*   **Data Transformation:** The target variable `score_10`, initially in the range \[-1, 1], is converted to the range \[0, 4] using the formula: `y = [int(2 * (score_10 + 1)) for score_10 in y]`.  This transformation is essential for compatibility with the learning algorithm. We must ensure that the algorithm loss functions, activation functions and architectures are compatible with integer labels.
+
+**3. Discuss Analysis**
+
+*   **Feature Understanding:** While we do *not* assume any specific knowledge about the features themselves, a basic exploratory data analysis (EDA) is conducted.
+    *   **Missing values**: Check for and impute missing values.
+    *   **Distribution**: Understand the distribution of features and target. Are there any feature value anomalies?
+    *   **Correlation**: Analyse feature-feature correlation and feature-target correlation.
+    *   **Feature Importance**: Investigate feature importance using techniques available in packages like sklearn to determine features which contribute most to the outcome.
+*   **Dataset Splitting:** Proper splitting between training and testing data is a must. We can also create a validation set to optimize the hyper-parameters.
+*   **Target Analysis:** Verify the distribution of the transformed target variable in the training dataset. We will use this information to select the loss functions and activation function for the architecture.
+*   **Stationarity Testing:** Conduct stationarity tests such as the Augmented Dickey-Fuller test on the price relatives to assess for stationarity. Depending on the results, differencing or other transformations may be applied.
+
+**4. Discuss Sampling**
+
+*   **Training Data Selection:** Data is provided in time series format. Use OSBL (Online Stochastic Batch Learning) scheme which includes the following steps:
+    * Mini-batch Creation: Create mini-batches of time series data of the time frame from the training dataset.
+    * Probability Distribution: Pick mini-batch start with the time tb≤t−nb with probability distribution
+    Pβ(tb)=β(1−β)t−tb−nb, where β∈(0,1) is the probability-decaying rate determining the shape of the probability distribution and how important are recent market events, and nb is the number of periods in a mini-batch.
+*   **Testing Data:** The testing data is used for final evaluation of the trained RL agent.
+
+**5. Address Limitations**
+
+*   **Feature Obscurity:**  The lack of information about the features' meaning is a key limitation. This makes feature engineering and informed model adjustments more difficult.
+*   **API Dependence:** The reliance on the Numin Platform's API introduces a dependency. Changes to the API or platform availability could disrupt the framework.
+*   **Data Quality:** We need to be mindful of potential data quality issues (errors, outliers) arising from the external data source.
+*   **Generalizability:** This data is only relevant for one particular platform, we will need to assess the generalizability to other platforms.
+
+**Modified Baseline Code Methodology:**
+
+Given the data context, the following adjustments can be made to the baseline code:
+
+1.  **Data Loading:** Implement data loading functions to read the CSV files from the "training\_data" folder. Include error handling for missing files or incorrect formats.
+2.  **Target Transformation:** Integrate the target transformation `y = [int(2 * (score_10 + 1)) for score_10 in y]` into the data preprocessing pipeline.
+3.  **Dataset Splitting:** Split the data into appropriate training, validation, and testing sets.
+4.  **Logging:** Log feature statistics, and EDA results.
+5.  **Exception Handling:** If the Numin Platform API becomes unavailable, the program should fail gracefully.

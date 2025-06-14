@@ -1,0 +1,1 @@
+This text introduces a method for improving regression performance using a distributional loss instead of a standard point-estimate loss, with potential applications to algorithmic trading.

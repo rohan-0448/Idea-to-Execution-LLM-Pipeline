@@ -1,0 +1,11 @@
+
+
+Attempt 9 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_06_1\temp_test.py", line 149, in <module>
+    aoe = AutonomyOfExperts(INPUT_SIZE, DEVICE, config)  # Initialize experts
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_06_1\temp_test.py", line 101, in __init__
+    saved_models_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), config['file_paths']['expert_models_dir']) # Corrected path
+                                                                                ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'expert_models_dir'

@@ -1,0 +1,22 @@
+
+
+Attempt 8 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\lstm_01\temp_train.py", line 97, in <module>
+    lstm_dist = LSTMDistributionOutput(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE).to(DEVICE)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 1340, in to
+    return self._apply(convert)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 900, in _apply
+    module._apply(fn)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\rnn.py", line 283, in _apply
+    ret = super()._apply(fn, recurse)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 927, in _apply
+    param_applied = fn(param)
+                    ^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 1326, in convert
+    return t.to(
+           ^^^^^
+RuntimeError: PyTorch is not linked with support for mps devices

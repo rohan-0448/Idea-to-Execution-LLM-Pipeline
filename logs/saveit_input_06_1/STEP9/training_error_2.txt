@@ -1,0 +1,29 @@
+
+
+Attempt 2 Error Log:
+
+Training:   0%|          | 0/30 [00:00<?, ?it/s]
+Training:   0%|          | 0/30 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_06_1\temp_train.py", line 144, in <module>
+    outputs = mlp(features)  # Get model predictions
+              ^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_06_1\temp_train.py", line 107, in forward
+    out = self.l2(X)  # Apply second linear layer
+          ^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (64x47 and 100x100)

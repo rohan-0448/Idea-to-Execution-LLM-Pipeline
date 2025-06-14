@@ -1,0 +1,38 @@
+Okay, I will provide a methodology to incorporate the idea of using the Numin platform's dataset context into the deep portfolio management framework described in the original paper.
+
+**1. Introduce Method: Numin Platform Data Integration**
+
+This methodology expands the existing deep portfolio management framework by incorporating financial data sourced from the Numin platform. The Numin platform provides both training and testing datasets accessible via API calls.  The data consists of stock IDs (text format) and numerical features (float values). Crucially, the training data includes a target variable which is transformed from a [-1, 1] range to a [0, 4] range using the provided formula `y = [int(2 * (score_10 + 1)) for score_10 in y]`. This integration leverages the Numin platform's resources to enhance the learning and evaluation process of the portfolio management agent.
+The training data is converted into the [0,4] range so that the algorithm can determine the asset growth scores using classification instead of regression to improve performace.
+
+**2. Establish Connections: Integrating Numin Data into the Existing Framework**
+
+*   **Data Acquisition:** Modify the existing data acquisition process to include API calls to the Numin platform. This would replace or augment the cryptocurrency data used in the original paper. Implement a robust data downloading and storage mechanism, mirroring the file naming convention 'df\_val\_01-Apr-2024.csv' and storing data in the `./training_data` folder.
+*   **Feature Mapping:**  Analyze the features provided by the Numin platform and determine how they can be integrated into the existing input tensor `Xt`. This might involve feature selection, transformation, or normalization to align with the existing data structure.  The structure should preserve all the original features, i.e., it should not be assumed that feature engineering is necessary. The stock ID will have to be integrated using techniques such as embedding layers.
+*   **Target Variable Integration:** Integrate the target variable into the existing reward function.  The transformation from [-1, 1] to [0, 4] is crucial and must be applied correctly during training. The loss can now be calculated as a classification problem rather than as regression.
+*   **EIIE Adaptation:** The architecture of the Identical Independent Evaluators (IIEs) might need adjustments to accommodate the new feature set and the classification approach for the target variable.  Consider using embedding layers for processing stock IDs. For example, the output layer of the networks could be changed to be a multiclass classifier with 5 classes.
+*   **Portfolio Vector Memory:** The portfolio vector memory will be updated based on the classification results that are converted to the desired portfolio weights.
+
+**3. Discuss Analysis: Impact of Numin Data on Portfolio Performance**
+
+*   **Comparative Analysis:** Compare the performance of the portfolio management agent trained with the Numin data against the performance of the agent trained with the original cryptocurrency data. Use the same performance metrics (fAPV, Sharpe Ratio, MDD) to ensure a fair comparison.
+*   **Feature Importance Analysis:** Investigate the importance of different features from the Numin platform in driving portfolio performance. This can be done using feature importance techniques available in machine learning libraries.
+*   **Scenario Analysis:** Conduct scenario analysis to evaluate the portfolio's performance under different market conditions reflected in the Numin data (e.g., bull markets, bear markets, periods of high volatility).
+*   **Impact of Classification:** Determine if the classification approach for asset scoring improves or deteriorates performance.
+
+**4. Discuss Sampling: Strategies for Mini-Batch Training with Numin Data**
+
+*   **Stratified Sampling:** Implement stratified sampling to ensure that each mini-batch contains a representative distribution of target variable values (i.e., classes [0, 4]). This is especially important if the target variable distribution is skewed.
+*   **Time-Based Sampling:** Consider time-based sampling strategies to capture temporal dependencies in the Numin data. This could involve creating mini-batches that consist of consecutive time periods.
+*   **Stock ID-Based Sampling:** Explore sampling strategies based on stock IDs to ensure that each mini-batch contains a diverse set of assets.
+*    **Ensemble based Sampling:** Consider combining different sampling techniques in the mini-batch sampling. For example, you could ensure that there are a sufficient number of random stock ids in the dataset along with a percentage of stock ids with time based data.
+
+**5. Address Limitations**
+
+*   **Data Availability and Quality:** Acknowledge any limitations related to the availability or quality of the Numin platform data. This might include missing data, errors, or biases.
+*   **Feature Engineering Assumptions:** Explicitly state that no assumptions are made about the features or the need for feature engineering. The focus is on integrating the raw data provided by the Numin platform.
+*   **Generalizability:** Discuss the generalizability of the results to other financial markets or time periods. The Numin data might be specific to a particular market segment or economic environment.
+*   **Computational Resources:** The approach may require high computational resources for running API calls and training the networks.
+*   **Overfitting to test dataset:** The test dataset will be used to evaluate the model. Hence the parameters will have to be tuned to prevent overfitting, possibly by applying regularization or batch normalization techniques.
+
+By following this methodology, the deep portfolio management framework can be effectively extended to leverage the Numin platform's dataset context. This will enable more comprehensive training and evaluation, leading to potentially improved portfolio performance.

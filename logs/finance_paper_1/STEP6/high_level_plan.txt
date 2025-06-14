@@ -1,0 +1,141 @@
+Okay, I will refine the methodology based on your feedback and the structure from the last turn.
+
+**1. Check method details.**
+
+*   The methodology focuses on integrating the Numin platform dataset into the existing Deep Portfolio Management framework.
+*   The methodology does not explicitly compare the performance of the model using Numin data with other models or datasets, but rather focuses on outlining the necessary steps for integration and preprocessing.
+
+**2. Was idea adapted?**
+
+Yes, the idea of incorporating the Numin dataset, including its structure and target variable transformation, has been incorporated.
+
+**3. Is method appropriate?**
+
+Yes, the method is appropriate for the stated goal of integrating and leveraging the Numin dataset within the existing framework.
+
+**4. Write method steps.**
+
+**4.1 Data Acquisition:**
+
+1.  Utilize the Numin platform API and downloadable CSV files to obtain financial time series data for training and evaluation. Differentiate between training and test datasets.
+2.  If using the provided pre-downloaded data, ensure the data files are located in the `./training_data` directory and follow the naming convention `df_val_DD-Mon-YYYY.csv`. Ensure that testing data is saved separately.
+3.  Determine a list of `id`s (stock identifiers) to incorporate. Consider setting the number of IDs fixed at the start to maintain the EIIE structure.
+
+**4.2 Data Loading and Initial Preprocessing:**
+
+1.  Use the pandas library to load the CSV data into dataframes. Ensure correct data types for each column (e.g., `id` as string, features as floats).
+2.  Separate the features and target variables (for training data). Identify the features used for testing data.
+
+**4.3 Target Variable Transformation (for training data):**
+
+1.  Transform the target variable from the \[-1, 1] range to \[0, 4] using the formula `y = [int(2 * (score_10 + 1)) for score_10 in y]`.
+2.  Verify the distribution of the transformed target variable.
+
+**4.4 Feature Engineering and Scaling:**
+
+1.  **Missing Data Handling:** Apply an appropriate strategy to handle missing data (imputation with a constant value consistent with the original paper).
+2.  **Feature Scaling:** Implement feature scaling techniques consistent with the existing framework, (e.g. normalize historical price data relative to the latest closing price).
+3.  **ID Incorporation:** Incorporate the `id` information into the state representation.
+
+**4.5 Data Splitting and Mini-Batch Construction:**
+
+1.  Split the data into training, validation, and testing sets using a time-based split.
+2.  Implement the OSBL scheme to construct mini-batches, ensuring temporal contiguity and decaying probability of selection based on time lag. Incorporate the `id` information to form the correct training batches for the EIIE component.
+
+**5. Write pseudocode.**
+
+Here's pseudocode for the training and testing processes, emphasizing data handling:
+
+**5.1 Training Pseudocode**
+
+```python
+# Initialize
+list_of_ids = [...] # Preselected set of IDs to use
+training_data_path = "./training_data"
+
+# Data Acquisition and Loading
+training_data = {}
+for file in list_training_files:
+    df = pd.read_csv(training_data_path + "/" + file)
+    # Filter IDs
+    df = df[df['id'].isin(list_of_ids)]
+    training_data[file] = df
+
+# Preprocessing and Target Transformation
+for file, df in training_data.items():
+    # Apply target variable transformation
+    df['target'] = [int(2 * (score_10 + 1)) for score_10 in df['target']]
+    # Handle missing data (imputation with constant value)
+    df.fillna(constant_value, inplace=True) # constant_value must be pre-defined
+    # Feature Scaling (normalize historical prices to latest closing price)
+    df = normalize_features(df) # Function to perform scaling
+
+# Initialize Portfolio Vector Memory (PVM)
+pvm = initialize_pvm(number_of_assets, initial_weights)
+
+# Training Loop
+for epoch in range(number_of_epochs):
+    for t in range(training_data_length): #Iterate over time steps
+
+        #OSBL Mini-Batch Selection
+        mini_batch = select_mini_batch(training_data, t, batch_size, beta) #Beta = decaying rate
+
+        # Prepare mini-batch data for EIIE
+        state = create_state(mini_batch, t, pvm) # State = (Xt, wt-1)
+        #where
+        #Xt = price tensor
+        #wt-1 = portfolio vector
+
+        # Forward pass through EIIE network
+        portfolio_vector = EIIE_network(state) #Output portfolio weights (wt)
+
+        # Calculate reward (rt+1) based on log returns
+        reward = calculate_reward(mini_batch, portfolio_vector, t)
+
+        # Backpropagation and parameter update
+        update_network_parameters(reward)
+
+        # Update Portfolio Vector Memory (PVM)
+        pvm.update(t, portfolio_vector)
+
+def normalize_features(df):
+        # Normalize the historical prices to the most recent closing price
+        # Implement normalization logic based on EIIE requirements
+        return df
+```
+
+**5.2 Testing Pseudocode**
+
+```python
+#Data Acquistion and Loading
+testing_data_path = "./testing_data"
+
+testing_data = {}
+
+for file in testing_files:
+        df = pd.read_csv(testing_data_path + "/" + file)
+
+#Filter IDs
+        df = df[df['id'].isin(list_of_ids)]
+        testing_data[file] = df
+
+#Preprocessing
+for file, df in testing_data.items():
+        df.fillna(constant_value, inplace = True)
+        df = normalize_features(df)
+
+#Initialize PVM
+pvm = initialize_pvm(number_of_assets, initial_weights)
+
+#Backtesting Loop
+for t in range(testing_data_length):
+        state = create_state(testing_data, t, pvm) #State = (Xt, wt-1)
+        portfolio_vector = EIIE_network(state)
+
+        #Simulate Trading and Calculate Returns
+        returns = calculate_returns(testing_data, portfolio_vector, t)
+        #Update PVM
+        pvm.update(t, portfolio_vector)
+```
+
+This refined methodology provides a clear outline for integrating the Numin dataset into the Deep Portfolio Management framework, emphasizing the crucial data processing and transformation steps. The pseudocode provides a template for implementation.

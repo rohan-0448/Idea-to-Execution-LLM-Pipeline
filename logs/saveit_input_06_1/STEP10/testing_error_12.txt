@@ -1,0 +1,11 @@
+
+
+Attempt 12 Error Log:
+2025-04-04 15:17:46,962 - ERROR - Error: 'expert_models_dir' not found in config.yaml.
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_06_1\temp_test.py", line 163, in <module>
+    aoe = AutonomyOfExperts(INPUT_SIZE, DEVICE, config)  # Initialize experts
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_06_1\temp_test.py", line 108, in __init__
+    raise ValueError("Missing 'expert_models_dir' in config.yaml")
+ValueError: Missing 'expert_models_dir' in config.yaml

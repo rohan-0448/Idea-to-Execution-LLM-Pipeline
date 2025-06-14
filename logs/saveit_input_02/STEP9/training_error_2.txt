@@ -1,0 +1,7 @@
+
+
+Attempt 2 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\lstm_01\temp_train.py", line 37, in <module>
+    raise FileNotFoundError(f"The specified file does not exist: {training_data_fp}")
+FileNotFoundError: The specified file does not exist: ./training_data/df_val_31-May-2024.csv

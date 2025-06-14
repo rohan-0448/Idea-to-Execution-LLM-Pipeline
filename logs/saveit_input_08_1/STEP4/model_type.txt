@@ -1,0 +1,9 @@
+<role>: "assistant"
+    
+<content>: "
+*   **Expert Evaluation:** Sequential
+*   **Trajectory Generation:** Flat
+*   **Trajectory Evaluation:** Flat
+*   **Ensemble Weighting:** Flat
+"
+</content>

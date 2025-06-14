@@ -1,0 +1,7 @@
+
+
+Attempt 7 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_08_1\temp_test.py", line 69, in <module>
+    raise FileNotFoundError(f"Model file not found at: {model_path}")
+FileNotFoundError: Model file not found at: /Users/mo/Desktop/repos/idea-to-execution-ip/saved_models\best_mlp.pth

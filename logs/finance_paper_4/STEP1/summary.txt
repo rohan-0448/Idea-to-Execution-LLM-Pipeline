@@ -1,0 +1,10 @@
+The paper "Deep Portfolio Management" introduces a novel reinforcement learning (RL) framework for financial portfolio management, offering a model-free approach using deep machine learning. 
+Key points:
+*   **Framework Components:** The framework is built upon the Ensemble of Identical Independent Evaluators (EIIE) topology, Portfolio-Vector Memory (PVM), Online Stochastic Batch Learning (OSBL), and a fully exploiting reward function.
+*   **EIIE Topology:** The Ensemble of Identical Independent Evaluators (EIIE) is a core feature, using multiple neural networks to evaluate the potential growth of individual assets.
+*   **PVM:** Portfolio-Vector Memory (PVM) stores previous portfolio weights, allowing the RL agent to consider transaction costs.
+*   **OSBL:** The Online Stochastic Batch Learning (OSBL) scheme is used for training, compatible with both pre-trade and online training.
+*   **Cryptocurrency Market:** The framework's effectiveness is tested in the cryptocurrency market, using a 30-minute trading period.
+*   **Superior Performance:** Instances of the framework using Convolutional Neural Networks (CNN), Recurrent Neural Networks (RNN), and Long Short-Term Memory (LSTM) outperform other trading algorithms, achieving significant returns despite commission rates.
+*   **Key Advantage:** Unlike price-prediction-based algorithms, this framework directly outputs market actions, making it fully machine learning-driven and adaptable.
+*   **Scalability:** EIIE framework exhibits linear scalability with the number of assets and improved data usage efficiency.

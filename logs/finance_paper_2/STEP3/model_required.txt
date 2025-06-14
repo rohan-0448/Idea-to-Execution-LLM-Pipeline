@@ -1,0 +1,33 @@
+For the "Deep Portfolio Management" paper (arXiv:1706.10059v2), which focuses on using deep reinforcement learning for financial portfolio management, the following model architecture recommendations are provided:
+
+*   **Core Architecture:** The paper explores the Ensemble of Identical Independent Evaluators (EIIE) topology. This is a key architectural component. The core idea is to have multiple independent neural networks (Evaluators), each assessing individual assets.
+
+*   **Individual Evaluator Architectures (IIEs):** The paper experimented with three types of IIEs.
+    *   Convolutional Neural Network (CNN): Suitable for identifying patterns in price history.
+    *   Recurrent Neural Network (RNN): Appropriate for capturing temporal dependencies in asset prices.
+    *   Long Short-Term Memory (LSTM): A type of RNN designed to handle long-term dependencies and mitigate vanishing gradients, potentially beneficial for capturing longer-term trends.
+
+*   **Reinforcement Learning Framework:** The model employs a reinforcement learning framework, requiring an agent (the portfolio manager) and an environment (the financial market). The action space involves continuous portfolio weights, and the reward function is based on logarithmic returns.
+
+Considering the specifics of this paper and the advancements in the field since its publication, here's a more refined recommendation:
+
+**Recommended Architecture:**
+
+1.  **EIIE Topology:** Maintain the Ensemble of Identical Independent Evaluators (EIIE) topology. This architecture's modularity and parallel processing capabilities are well-suited for portfolio management.
+2.  **IIE Architecture:** Instead of basic RNNs, use LSTMs or Gated Recurrent Units (GRUs) with attention mechanisms for the individual evaluators. Attention mechanisms can help the model focus on the most relevant time steps in the price history of each asset.
+3.  **Deep Reinforcement Learning Algorithm:** Employ a more advanced deep reinforcement learning algorithm. The paper mentions Deterministic Policy Gradient (DPG) algorithms, but consider these options:
+    *   **Soft Actor-Critic (SAC):** SAC is an off-policy algorithm that aims to maximize a trade-off between expected return and entropy, which promotes exploration and robustness.
+    *   **Proximal Policy Optimization (PPO):** PPO is an on-policy algorithm known for its stability and ease of implementation. It's a good choice if on-policy learning is preferred.
+4.  **Portfolio-Vector Memory (PVM):** The Portfolio-Vector Memory (PVM) is a useful component to include. It allows the agent to remember and consider previous portfolio weights, which can help minimize transaction costs.
+5.  **Input Data:** As described in the paper, use a price tensor as input, incorporating closing, highest, and lowest prices. Feature engineering, such as adding technical indicators (e.g., moving averages, RSI, MACD) could further enhance performance.
+6.  **Reward Function:** Stick to the explicit average of the periodic logarithmic returns as the reward function.
+7.  **Online Stochastic Batch Learning (OSBL):** The Online Stochastic Batch Learning (OSBL) scheme is a good way to train the model in a real-time environment, but using a Replay Buffer with prioritized experience replay could be a better alternative for off-policy algorithms like SAC.
+
+**Rationale:**
+
+*   **Attention Mechanisms:** These can enhance the ability of LSTMs/GRUs to focus on the most important time steps for each asset, leading to better performance.
+*   **SAC/PPO:** These are state-of-the-art RL algorithms that offer improved stability, exploration, and performance compared to basic DPG.
+*   **Prioritized Experience Replay:** This improves sample efficiency by replaying experiences that are more informative for learning.
+*   **Technical Indicators:** Incorporating these can provide the model with additional information about market trends and conditions.
+
+In summary, building upon the foundations laid out in the paper, the recommended architecture incorporates more advanced deep learning techniques to improve the robustness, exploration, and performance of the portfolio management system. The core EIIE topology remains valuable, while the individual IIEs and RL algorithm benefit from more recent innovations in the field.

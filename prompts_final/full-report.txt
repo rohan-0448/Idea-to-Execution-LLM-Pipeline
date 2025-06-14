@@ -1,0 +1,35 @@
+<role>"user"</role>
+<content>"Your task is to generate a detailed report for a successful training pipeline.
+
+The following inputs are provided:
+- high_level_plan: {high_level_plan}
+- final working training_code: {training_code}
+- log_report: {log_report}
+
+*Project Summary*
+Begin with a clear and well-structured summary of the project based on the high_level_plan input. Do not skip any technical aspects — mention what the pipeline aims to do, what kind of data or models it deals with, and how success is defined in this case. Be concise but thorough.
+
+*Final Working Code*
+Present the training_code below. Add inline comments (above or beside relevant blocks/lines) to explain what each section is doing. These comments should help a reader understand the logic and flow of the code — especially someone trying to reuse or extend the script. 
+
+*Log Report Analysis*
+Next, analyze the provided `log_report`. This report contains the stdout from running the final training code and includes information on whether the model is converging or not, and why. Look for key indicators in the logs (e.g., loss values, accuracy trends, gradient behavior, warnings, or errors) to determine if the model is successfully converging. Summarize the key observations from the log that help confirm the success or failure of the training process.
+
+- If the model is converging: 
+   - Highlight the metrics that indicate convergence (e.g., decreasing loss, stable accuracy, gradient stability).
+   - Mention any observed patterns or behaviors in the logs that demonstrate that the model has reached a stable state.
+   
+- If the model is not converging:
+   - Point out issues such as high loss, instability, or signs of overfitting or underfitting.
+   - Provide suggestions based on the logs, like tuning hyperparameters or adjusting the model architecture.
+
+*Conclusion*
+Write a 2–3 line conclusion explaining that the pipeline successfully generated a working script, and summarize how the current code aligns with the original plan. Optionally suggest next steps (e.g., validation, inference, deployment) if relevant.
+
+Formatting Instructions:
+- Use **bold headers** (e.g., *Project Summary, **Final Working Code, **Log Report Analysis, **Conclusion*).
+- Never include placeholder comments like "this does something".
+- Use real variable and function names from training_code in your commentary.
+- Assume the user will NOT edit the code manually — it should be understandable and ready to run as-is.
+
+</content>

@@ -1,0 +1,9 @@
+Here's a summary of the provided texts:
+
+**Text 1: Combine Monte Carlo Tree Diffusion (MCTD) with Autonomy of Experts (AoE) for Enhanced Algorithmic Trading.**
+
+This research proposes a hybrid algorithmic trading approach combining Monte Carlo Tree Diffusion (MCTD) with Autonomy of Experts (AoE).  MCTD handles overall planning and action space definition within the trading environment, while AoE selects the most suitable trading strategies ("experts") based on market conditions. This approach enhances efficiency by focusing computational resources on promising strategies and incorporates adaptive risk management by allowing strategies to opt-out based on risk tolerance.
+
+**Text 2: Combining CodeMonkeys with Autonomy of Experts (AoE) for Dynamic Algorithmic Trading Strategy Generation and Execution**
+
+This research combines CodeMonkeys and Autonomy of Experts (AoE) for dynamic algorithmic trading. CodeMonkeys generates a diverse set of trading strategies, each of which is treated as an "expert." AoE then selects the best performing and most confident experts for trade execution, dynamically adjusting the active ensemble based on market conditions and expert performance.  AoE also manages resource allocation and risk, distributing capital proportionally to expert confidence and incorporating risk management at both individual and ensemble levels.

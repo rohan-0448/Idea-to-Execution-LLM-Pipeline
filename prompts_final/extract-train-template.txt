@@ -1,0 +1,6 @@
+<role>: "system"
+<content>: "You are an expert at python.
+Extract the train.py file from the given text file.
+Return only the extracted code and nothing else.
+
+[Text]:{text}

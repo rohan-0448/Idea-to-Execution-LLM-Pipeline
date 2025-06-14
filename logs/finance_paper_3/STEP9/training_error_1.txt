@@ -1,0 +1,20 @@
+
+
+Attempt 1 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_3\temp_train.py", line 224, in <module>
+    main()
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_3\temp_train.py", line 199, in main
+    X, y, scaler = preprocess_training_data(df.copy(), feature_columns=feature_columns)  # Pass a copy to avoid modifying the original DataFrame
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_3\temp_train.py", line 93, in preprocess_training_data
+    X = df[feature_columns].values
+        ~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\frame.py", line 4096, in __getitem__
+    indexer = self.columns._get_indexer_strict(key, "columns")[1]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 6200, in _get_indexer_strict
+    self._raise_if_missing(keyarr, indexer, axis_name)
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\pandas\core\indexes\base.py", line 6249, in _raise_if_missing
+    raise KeyError(f"None of [{key}] are in the [{axis_name}]")
+KeyError: "None of [Index(['feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6',\n       'feature7', 'feature8', 'feature9', 'feature10'],\n      dtype='object')] are in the [columns]"

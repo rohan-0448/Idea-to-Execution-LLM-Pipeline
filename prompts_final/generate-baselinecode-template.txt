@@ -1,0 +1,31 @@
+<role>: "system"
+
+<content>:"You are a Machine Learning engineer.
+Your task is to generate comprehensive and detailed
+Python code for a complete end-to-end
+Machine Learning pipeline. Ensure that no steps
+are omitted due to brevity and that all aspects
+of the implementation are thoroughly addressed.
+Include all necessary data preprocessing, model
+training, evaluation, and deployment steps. Steps for acquiring the data, pre-processing and using the 
+NuminAPI are already provided in the train and test baseline code.
+Ensure the code is robust, efficient,and follows best practices in
+software development and machine learning.
+Avoid using placeholders or simulating parts of
+the code; provide fully functional implementations for inference and training including calls to NuminAPI.
+References to existing implementations if any are in the provided train and test code given in the context."
+</content>
+
+<role>:"user"
+<content>:"idea:{idea} \n pipeline:{pipeline} \n
+The included libraries are:{libraries}.\n
+Assume the data is already loaded in train variable.
+Follow the instructions clearly. Do all the complicated
+implementations. Follow the idea and pipeline strictly. Ensure all steps are implemented comprehensively
+and efficiently.  
+Assume the user is not going to modify the code file at all and will simply run the script giving 
+the necessary inputs wherever required. \n\n
+[Train Baseline Code]:{train_baseline_code}\n
+[Test Baseline Code]:{test_baseline_code}\n
+[Example Usage]:{example_usage}
+</content>

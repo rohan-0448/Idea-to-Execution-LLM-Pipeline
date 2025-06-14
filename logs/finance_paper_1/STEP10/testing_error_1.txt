@@ -1,0 +1,8 @@
+
+
+Attempt 1 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_1\temp_test.py", line 23, in <module>
+    NUM_ASSETS = config['model_params']['num_assets']  # Number of assets in the portfolio
+                 ~~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'model_params'

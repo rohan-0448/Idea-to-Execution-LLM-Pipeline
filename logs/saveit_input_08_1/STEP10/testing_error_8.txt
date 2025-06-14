@@ -1,0 +1,8 @@
+
+
+Attempt 8 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_08_1\temp_test.py", line 29, in <module>
+    napi = NuminAPI(api_key= config['api_key']) # Replace with your API Key
+                             ~~~~~~^^^^^^^^^^^
+KeyError: 'api_key'

@@ -1,0 +1,7 @@
+
+
+Attempt 14 Error Log:
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_06_1\temp_test.py", line 75
+    def evaluate_trajectories(self, self, trajectories, market_state, expert_opinions):
+                                    ^^^^
+SyntaxError: duplicate argument 'self' in function definition

@@ -1,0 +1,20 @@
+Text: Combine Monte Carlo Tree Diffusion (MCTD) with Autonomy of Experts (AoE) for Algorithmic Trading.
+
+The core idea is to use MCTD to generate and refine potential trading trajectories (sequences of states and actions) like in seed idea 1. Each node in the MCTD tree represents a partially denoised trajectory, and the simulation step evaluates the potential of expanding a branch.
+
+Integrate AoE by treating each 'expert' as a different type of MCTD simulation, or as a different exploration strategy within the MCTD process. For example:
+
+*   *Volatility Expert*: An MCTD simulation optimized for high-volatility environments.
+*   *Trend Following Expert*: An MCTD simulation focused on identifying and exploiting trends.
+*   *Mean Reversion Expert*: An MCTD simulation designed for mean-reverting market conditions.
+
+Each expert autonomously decides whether to participate in the evaluation of a given node (partially denoised trajectory) based on its activation which depends on market conditions. Only the most suitable expert contribute to the evaluation and selection of best trading strategy within the MCTD tree structure. In other words, when MCTD is exploring potential actions each potential Action (node in MCTD tree) is only evaluted if a self-selecting 'expert' deems itself appropriate for the market conditions represented by that action.
+
+This approach leverages the strengths of both MCTD (efficient exploration and refinement of trading strategies) and AoE (dynamic and adaptive selection of specialized trading approaches).
+
+Challenges would include:
+
+*   Defining appropriate experts and their activation criteria.
+*   Integrating the AoE selection process efficiently within the MCTD framework.
+*   Managing the increased computational complexity.
+*   Ensuring the diverse MCTD experts do not cause overfitting.

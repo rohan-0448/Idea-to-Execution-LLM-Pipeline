@@ -1,0 +1,139 @@
+Okay, I will refine the methodology based on your feedback and provide the requested components.
+
+**1. Check Method Details:**
+
+*   The generated methodology *does not* attempt to compare the model's performance with other models. It focuses on integrating a new data source (Numin platform) into the existing framework.
+
+**2. Was Idea Adapted?**
+
+*   Yes, the idea of leveraging the Numin platform's data and the specific context of the dataset (stock IDs, numerical features, transformed target variable) has been adapted and integrated into the methodology.
+
+**3. Is Method Appropriate?**
+
+*   Yes, the method is appropriate. It logically outlines the steps required to incorporate the Numin data into the deep portfolio management framework. The suggestions for feature mapping, EIIE adaptation, and sampling strategies are relevant and practical.
+
+**4. Method Steps:**
+
+1.  **Data Acquisition:** Implement API calls to the Numin platform to download both training and testing datasets, mirroring the specified file naming convention ("df\_val\_01-Apr-2024.csv") and directory structure ("./training\_data").
+2.  **Data Loading and Transformation:** Load the downloaded CSV data into pandas DataFrames. Apply the target variable transformation `y = [int(2 * (score_10 + 1)) for score_10 in y]` to the training data, converting the range from [-1, 1] to [0, 4].
+3.  **Feature Integration:** Integrate the stock IDs (text format) and numerical features from the Numin data into the existing input tensor `Xt`. Use embedding layers to handle the stock ID.
+4.  **EIIE Architecture Modification:** Adapt the Ensemble of Identical Independent Evaluators (IIEs) architecture to accommodate the Numin data. Specifically, modify the output layer to function as a multi-class classifier with 5 classes to predict the target value.
+5.  **Mini-Batch Sampling:** Implement a stratified sampling strategy to ensure balanced representation of target variable classes (0-4) within each mini-batch. Implement time based sampling for stock ids with appropriate amounts of time based data. Combine stratified sampling with time based sampling.
+6.  **Training Loop:** Train the deep portfolio management agent using the OSBL scheme with the integrated Numin data. Use cross-validation to tune the hyperparameters.
+7.  **Portfolio Vector Memory Update:** Update the Portfolio Vector Memory (PVM) based on the classification results, converting these to desired portfolio weights.
+8.  **Performance Evaluation:** Evaluate the trained agent on the test dataset from the Numin platform, calculating fAPV, Sharpe Ratio, and MDD. Compare performance with a baseline (e.g., the original framework trained on cryptocurrency data).
+9.  **Analysis:** Perform analysis on feature importance and evaluate overfitting on the test dataset. Apply techniques to reduce overfitting (e.g. batch normalization or regularization).
+
+**5. Pseudocode:**
+
+```python
+# Training Phase
+
+# Data Acquisition
+def download_data(date):
+  # API call to numin platform for the date
+  # Store into training_data directory
+  pass
+
+# Data Loading
+def load_and_transform_data(file_path):
+  # Load data into pandas DataFrame
+  # Transform target variable: y = [int(2 * (score_10 + 1)) for score_10 in y]
+  # Return features and target
+  pass
+
+# Feature Integration
+def create_input_tensor(data, lookback_window):
+  # Process stock IDs using embedding layers
+  # Normalize other numerical features
+  # Construct the Xt tensor
+  # Return Xt tensor and corresponding portfolio vector from PVM
+  pass
+
+#EIIE Architecture Modification
+def create_eie_network(embedding_dim, num_numerical_features):
+  #Embedding layer for stock IDs
+  #Concatenate numerical features with stock ID embeddings
+  #IIE Layers to asses individual assets
+  #Softmax layer to normalize weights to sum to one
+  #Return network architecture
+  pass
+
+# Mini Batch Sampling
+def create_mini_batch(all_data, batch_size):
+  # Apply stratified sampling based on target variable
+  # Return mini-batch of (Xt, portfolio_vector, target)
+  pass
+
+# Training Loop
+def train_agent(network, optimizer, loss_function, num_epochs, all_training_data):
+  # Load portfolio vector from PVM
+  for epoch in range(num_epochs):
+    for mini_batch in create_mini_batch(all_training_data, batch_size):
+      #Compute loss, optimize, and update parameters
+      pass
+
+#Portfolio Vector Memory Update
+def update_portfolio_vector_memory(prediction):
+  # Update PVM with portfolio weights converted from predictions
+  pass
+
+# Main Training Process
+#------------------------
+#Download Data
+#Load and Transform Data
+#Create EIIE Network
+#Initialize PVM with uniform weights
+#Loop with training and evaluation
+
+#Evaluation Phase:
+#Download testing data
+#Load and transform data
+#Create EIIE network
+#Create input tensors
+#Predict the next period closing prices, highest and lowest
+#Using test data to update portfolio vector memory
+#calculate reward
+```
+
+```python
+# Testing Phase
+# Data Acquisition
+def download_test_data(date):
+  # API call to numin platform for the date
+  # Store into training_data directory
+  pass
+
+# Data Loading
+def load_and_transform_test_data(file_path):
+  # Load data into pandas DataFrame
+  # Return features and target
+  pass
+
+# Test Data
+def create_input_tensor_test(data, lookback_window):
+  # Process stock IDs using embedding layers
+  # Normalize other numerical features
+  # Construct the Xt tensor
+  # Return Xt tensor and corresponding portfolio vector from PVM
+  pass
+
+# Using test data to predict new weights and update portfolio vector memory, calculate reward
+def test_agent(network, test_data):
+    #Load Portfolio Vector from PVM
+    for data_point in test_data:
+        #Compute the new portfolo weights
+        #Update portfilio vector memory
+        #Calculate the reward
+        #Log the fAPV, Sharpe Ration and MDD
+    pass
+
+# Main Testing Process
+#------------------------
+#Download Test Data
+#Load and Transform Test Data
+#Create Input Tensor
+#Test Agent
+```
+
+This pseudocode provides a clear structure for implementing the methodology, covering the key steps of data acquisition, preprocessing, model training, and evaluation. It also highlighs how the PVM is updated in both, the training and testing phases.

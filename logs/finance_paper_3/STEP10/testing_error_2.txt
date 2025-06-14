@@ -1,0 +1,7 @@
+
+
+Attempt 2 Error Log:
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_3\temp_test.py", line 194
+    ```"
+       ^
+SyntaxError: unterminated string literal (detected at line 194)

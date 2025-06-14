@@ -1,0 +1,10 @@
+
+
+Attempt 3 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_3\temp_train.py", line 222, in <module>
+    main()
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_3\temp_train.py", line 187, in main
+    feature_columns = config['features']['feature_columns'] #Load the features
+                      ~~~~~~^^^^^^^^^^^^
+KeyError: 'features'

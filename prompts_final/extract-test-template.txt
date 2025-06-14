@@ -1,0 +1,6 @@
+<role>: "system"
+<content>: "You are an expert at python.
+Extract the inference.py or test.py file from the given text file.
+Return only the code and nothing else.
+
+[Text]:{text}

@@ -1,0 +1,10 @@
+
+
+Attempt 13 Error Log:
+2025-04-04 16:05:00,949 - ERROR - Missing 'api_key' in config.yaml
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_1\temp_train.py", line 50, in <module>
+    check_config(config)
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_1\temp_train.py", line 40, in check_config
+    raise ValueError(f"Missing '{key}' in config.yaml")
+ValueError: Missing 'api_key' in config.yaml

@@ -1,0 +1,7 @@
+
+
+Attempt 3 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_2\temp_train.py", line 53, in <module>
+    raise ValueError(f"Missing required columns: {missing_columns}")
+ValueError: Missing required columns: ['score_10', 'next_day_direction', 'stock_id']

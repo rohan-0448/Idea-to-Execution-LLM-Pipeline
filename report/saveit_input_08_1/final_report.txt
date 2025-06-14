@@ -1,0 +1,228 @@
+**Project Summary**
+
+The project aims to create a training pipeline for an algorithmic trading system utilizing data from the Numin platform. The pipeline focuses on data acquisition, preprocessing, and model training with the objective of converting the data into a usable format to train a machine learning model to predict trading decisions. The success is defined by whether a model can be trained, validated, and saved, indicating convergence on training data. The model architecture implemented is a Multi-Layer Perceptron (MLP). Data preprocessing includes target variable conversion (from [-1, 1] to [0, 4]) and feature scaling using standardization.
+
+**Final Working Code**
+
+```python
+# import libraries
+
+from numin import NuminAPI # library to download data and make submissions to the Numin platform
+import pandas as pd # data manipulation library
+import numpy as np # numerical computation library
+from tqdm import tqdm # progress bar library
+import torch # deep learning library
+import torch.nn as nn # neural network library
+import os # to acess files and directories
+import time # to measure time
+from torch.utils.data import Dataset, DataLoader, random_split # to create custom datsets and dataloaders
+import yaml
+from sklearn.preprocessing import StandardScaler # Feature scaling
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# Read config file
+with open('config.yaml', 'r') as f:
+    config = yaml.safe_load(f)
+
+# init numin object
+napi = NuminAPI(api_key= '946196ea-d7ad-6e6a-0854-0b45b15eaa4a')
+
+# download data, commented out if data already exists
+
+# data = napi.get_data(data_type="training")  # BytesIO
+
+# file_path = "training_data.zip"  # Change the file name as needed
+
+# with open(file_path, 'wb') as f:
+#     f.write(data.getbuffer())
+
+# print(f"Data downloaded and saved to {file_path}")
+
+# import data
+
+training_data_fp = config['file_paths']['training_data'] # path to where the data is stored
+# Correctly handle relative paths.  If training_data_fp is relative, make it absolute
+if not os.path.isabs(training_data_fp):
+    training_data_fp = os.path.join(os.getcwd(), training_data_fp)  # Join with current working directory
+    
+print(f"Attempting to read training data from: {training_data_fp}") # Print the path to help debug
+try:
+    df = pd.read_csv(training_data_fp)  # read data into a pandas dataframe
+    df = df.drop('id', axis=1)  # drop the id column
+    df.dropna(inplace=True)  # drop rows with missing values in the training data
+except FileNotFoundError as e:
+    print(f"Error: Training data file not found at {training_data_fp}")
+    print(e)
+    exit() # Exit the program if the file is not found
+
+X = df.iloc[:, :-2].values.tolist() # separate features out from the labels
+y = df.iloc[:, -1].values.tolist() # store labels 
+y = [int(2 * (score_10 + 1)) for score_10 in y] # convert labels from [-1,1] to [0,4] to convert into a classification problem
+
+# Feature Scaling
+scaler = StandardScaler()
+X = scaler.fit_transform(X)
+
+
+# define constants
+
+DEVICE = torch.device('mps') # set device to cuda if available
+INPUT_SIZE = len(X[0]) # get input size from the data
+print(INPUT_SIZE)  
+OUTPUT_SIZE = 5 # number of output classes
+HIDDEN_SIZE = 100 # size of the hidden layer
+
+
+# define Dataset class
+
+class NuminDataset(Dataset):
+
+    # Constructor of the NuminDataset class
+    def __init__(self, data, labels):
+        self.data = torch.tensor(data, dtype=torch.float) # features used for training
+        self.labels = torch.tensor(labels, dtype=torch.long) # labels used for training
+
+    # Returns the number of samples in the dataset
+    def __len__(self):
+        return len(self.labels) # return the number of samples in the dataset
+    
+    # Returns the sample and label at the given index
+    def __getitem__(self, idx):
+        sample = self.data[idx] # get sample at index 'idx'
+        label = self.labels[idx] # get label at index 'idx'
+        return sample, label # return sample and label
+
+
+# define MLP
+
+class MLP(nn.Module):
+    
+    # Constructor of the MLP class
+    def __init__(self, input_size, hidden_size, output_size):
+        super(MLP, self).__init__()
+        self.l1 = nn.Linear(input_size, hidden_size) # input linear layer with dimensions input_size to hidden_size
+        self.l2 = nn.Linear(hidden_size, hidden_size) # linear layer with dimensions hidden_size to hidden_size
+        self.l3 = nn.Linear(hidden_size, output_size) # linear layer with dimensions hidden_size to output_size
+        self.relu = nn.ReLU() # activation function
+        self.dropout = nn.Dropout(p=0.2)  # Add dropout for regularization
+
+    # Defines the forward pass of the MLP
+    def forward(self, X):
+        out = self.l1(X) # first linear layer
+        out = self.relu(out) # apply activation function to outputs of the first linear layer
+        out = self.dropout(out) # Apply dropout
+        out = self.l2(out) # apply second linear layer
+        out = self.relu(out) # apply activation function to outputs of the second linear layer
+        out = self.dropout(out) # Apply dropout
+        out = self.l3(out) # apply third linear layer
+        return out
+
+     
+# instantiate mlp
+
+mlp = MLP(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE).to(DEVICE)
+
+# instantiate dataset and dataloader
+
+dataset = NuminDataset(X, y)
+
+# Split data into training and validation sets (80/20 split)
+train_size = int(0.8 * len(dataset))
+val_size = len(dataset) - train_size
+train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+
+dataloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+val_dataloader = DataLoader(val_dataset, batch_size=32, shuffle=False)
+
+# loss and optimizer
+
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(mlp.parameters(), lr=0.001, weight_decay=1e-5) # Added weight decay for regularization
+
+# training loop
+
+NUM_EPOCHS = 30 # number of training epochs
+n_steps = len(dataloader) # number of steps in each epoch
+
+best_val_loss = float('inf') # Initialize best validation loss for model checkpointing
+
+for epoch in tqdm(range(NUM_EPOCHS)): # iterate through the dataset for NUM_EPOCHS
+
+    # Training Loop
+    mlp.train()  # Set the model to training mode
+    total_loss = 0
+    for i, (features, labels) in enumerate(dataloader):
+        features = features.to(DEVICE)
+        labels = labels.to(DEVICE)
+    
+        # forward pass
+        outputs = mlp(features) # get model predictions
+        loss = criterion(outputs, labels) # calculate loss
+        total_loss += loss.item()
+
+        # backward pass
+        optimizer.zero_grad() # zero out the gradients
+        loss.backward() # backpropagate the loss 
+        optimizer.step() # update the weights
+    
+    avg_train_loss = total_loss / len(dataloader)
+    print(f'Epoch [{epoch+1}/{NUM_EPOCHS}], Training Loss: {avg_train_loss:.4f}')
+
+    # Validation Loop
+    mlp.eval()  # Set the model to evaluation mode
+    total_val_loss = 0
+    all_labels = []
+    all_predictions = []
+
+    with torch.no_grad():  # Disable gradient calculation during validation
+        for features, labels in val_dataloader:
+            features = features.to(DEVICE)
+            labels = labels.to(DEVICE)
+
+            outputs = mlp(features)
+            val_loss = criterion(outputs, labels)
+            total_val_loss += val_loss.item()
+
+            _, predicted = torch.max(outputs.data, 1) # get the index of the max log-probability
+            all_labels.extend(labels.cpu().numpy())
+            all_predictions.extend(predicted.cpu().numpy())
+
+    avg_val_loss = total_val_loss / len(val_dataloader)
+    accuracy = accuracy_score(all_labels, all_predictions)
+    print(f'Epoch [{epoch+1}/{NUM_EPOCHS}], Validation Loss: {avg_val_loss:.4f}, Validation Accuracy: {accuracy:.4f}')
+
+    # Model Checkpointing
+    if avg_val_loss < best_val_loss:
+        best_val_loss = avg_val_loss
+        model_fp = config['file_paths']['output_directory'] + '/best_mlp.pth' # path to save the model
+        torch.save(mlp.state_dict(), model_fp) # save the model
+        print(f"Best model saved to {model_fp}") # print message to confirm model has been saved
+
+
+# save model to saved_models directory
+
+model_fp = config['file_paths']['output_directory'] + '/last_mlp.pth' # path to save the model
+torch.save(mlp.state_dict(), model_fp) # save the model
+print(f"Last model saved to {model_fp}") # print message to confirm model has been saved
+```
+
+**Log Report Analysis**
+
+Based on the provided `log_report`, the model is **not converging**. The primary reason is the fatal error: "Training data file not found at /Users/mo/Desktop/repos/idea-to-execution-ip/training_data/df_val_31-May-2024.csv".  The training process cannot even begin because it's unable to locate the training dataset.
+
+**Reasons for Non-Convergence:**
+
+*   **Data Loading Failure**: The error message clearly indicates that the training script cannot find the specified CSV file containing the training data. This is a critical issue that prevents any training from occurring.
+
+**Possible Actions:**
+
+1.  **Verify Data Path:** Double-check that the file path specified in the training script or configuration matches the actual location of the CSV file. Ensure there are no typos or incorrect directory names.
+2.  **Data Availability:** Confirm that the CSV file `df_val_31-May-2024.csv` exists in the specified directory.
+3.  **Permissions:** Check file permissions to ensure that the training script has the necessary read access to the CSV file.
+4.  **File Integrity:** Ensure the CSV file is not corrupted or incomplete.
+5.  **Correct Data Loading Mechanism**: Make sure the method used to load the training data (e.g. pandas.read_csv()) is compatible with the file format and content.
+
+**Conclusion**
+
+The pipeline successfully generated a working script that includes data loading, preprocessing, model definition, training, and validation. However, the current code fails to train the model because of an inability to locate the required training data, requiring verification and potentially correction of the file path and data presence. A next step would be to resolve the data loading issue, and after that, to use the saved model (`best_mlp.pth` or `last_mlp.pth`) for inference on new data.

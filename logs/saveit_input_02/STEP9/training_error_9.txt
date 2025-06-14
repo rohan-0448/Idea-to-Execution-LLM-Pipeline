@@ -1,0 +1,50 @@
+
+
+Attempt 9 Error Log:
+
+  0%|          | 0/30 [00:00<?, ?it/s]
+  3%|3         | 1/30 [00:00<00:20,  1.39it/s]
+  7%|6         | 2/30 [00:01<00:20,  1.39it/s]
+ 10%|#         | 3/30 [00:02<00:19,  1.40it/s]
+ 13%|#3        | 4/30 [00:02<00:18,  1.42it/s]
+ 17%|#6        | 5/30 [00:03<00:17,  1.42it/s]
+ 20%|##        | 6/30 [00:04<00:16,  1.43it/s]
+ 23%|##3       | 7/30 [00:04<00:16,  1.43it/s]
+ 27%|##6       | 8/30 [00:05<00:15,  1.44it/s]
+ 30%|###       | 9/30 [00:06<00:14,  1.44it/s]
+ 33%|###3      | 10/30 [00:06<00:13,  1.45it/s]
+ 37%|###6      | 11/30 [00:07<00:13,  1.45it/s]
+ 40%|####      | 12/30 [00:08<00:12,  1.45it/s]
+ 43%|####3     | 13/30 [00:09<00:11,  1.45it/s]
+ 47%|####6     | 14/30 [00:09<00:10,  1.47it/s]
+ 50%|#####     | 15/30 [00:10<00:10,  1.45it/s]
+ 53%|#####3    | 16/30 [00:11<00:09,  1.45it/s]
+ 57%|#####6    | 17/30 [00:11<00:09,  1.44it/s]
+ 60%|######    | 18/30 [00:12<00:08,  1.43it/s]
+ 63%|######3   | 19/30 [00:13<00:07,  1.45it/s]
+ 67%|######6   | 20/30 [00:13<00:06,  1.45it/s]
+ 70%|#######   | 21/30 [00:14<00:06,  1.45it/s]
+ 73%|#######3  | 22/30 [00:15<00:05,  1.44it/s]
+ 77%|#######6  | 23/30 [00:16<00:04,  1.42it/s]
+ 80%|########  | 24/30 [00:16<00:04,  1.43it/s]
+ 83%|########3 | 25/30 [00:17<00:03,  1.41it/s]
+ 87%|########6 | 26/30 [00:18<00:02,  1.39it/s]
+ 90%|######### | 27/30 [00:18<00:02,  1.41it/s]
+ 93%|#########3| 28/30 [00:19<00:01,  1.41it/s]
+ 97%|#########6| 29/30 [00:20<00:00,  1.43it/s]
+100%|##########| 30/30 [00:20<00:00,  1.44it/s]
+100%|##########| 30/30 [00:20<00:00,  1.43it/s]
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\lstm_01\temp_train.py", line 155, in <module>
+    torch.save(lstm_dist.state_dict(), model_fp) # save the model
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\serialization.py", line 849, in save
+    with _open_zipfile_writer(f) as opened_zipfile:
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\serialization.py", line 716, in _open_zipfile_writer
+    return container(name_or_buffer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\serialization.py", line 687, in __init__
+    super().__init__(torch._C.PyTorchFileWriter(self.name))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Parent directory ./saved_models does not exist.

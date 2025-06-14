@@ -1,0 +1,7 @@
+
+
+Attempt 7 Error Log:
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\lstm_01\temp_train.py", line 70
+    def __getitem__(self, self, idx):
+                          ^^^^
+SyntaxError: duplicate argument 'self' in function definition

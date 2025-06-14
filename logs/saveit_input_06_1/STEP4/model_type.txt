@@ -1,0 +1,4 @@
+*   **Experts:** Sequential
+*   **Trajectory Generation:** Flat
+*   **Tree Search:** N/A
+*   **Meta-Actions:** Sequential

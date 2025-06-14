@@ -1,0 +1,23 @@
+<role>"user"</role>
+<content>"Your task is to analyze and report on the given pipeline behavior using the summary and issue provided below.
+
+*Project Context*
+{high_level_plan}
+
+*Issues Encountered*
+{issue_encountered}
+
+Your job is to:
+1. Summarize the high-level plan concisely but with all important technical details. Do not exceed the 700-word limit.
+2. List key issues that may cause the pipeline to fail based on the input.
+3. Provide a detailed, step-by-step plan the user can follow to analyze and improve the reliability of the pipeline. This should include data collection points, logging ideas, error categorization, and post-run statistical reporting.
+4. Write a 2–3 line conclusion summarizing the goal of the effort and why robust error tracing and success metrics are important.
+
+Formatting:
+- Use emoji-based and bold section headers (e.g., 🔧 *Issues Encountered*).
+- Maintain clarity for technical and student-level understanding.
+- Assume that the reader will *not modify* any files and will rely on fully automated or logged diagnostics.
+- Do not make assumptions. Do not skip implementation-level hints.
+- Do not use placeholder text or vague directions.
+
+</content>

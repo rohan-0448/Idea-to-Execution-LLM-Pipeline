@@ -1,0 +1,7 @@
+
+
+Attempt 6 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_08_2\temp_test.py", line 75, in <module>
+    raise FileNotFoundError(f"Scaler file not found at: {scaler_fp}.  Make sure training completed successfully and the output directory in config.yaml is correct.")
+FileNotFoundError: Scaler file not found at: /Users/Rohan/Desktop/GautamSirIPWork/idea-to-execution-ip/saved_models\scaler.pkl.  Make sure training completed successfully and the output directory in config.yaml is correct.

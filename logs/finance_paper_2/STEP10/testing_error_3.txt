@@ -1,0 +1,50 @@
+
+
+Attempt 3 Error Log:
+
+  0%|          | 0/30 [00:00<?, ?it/s]
+  3%|3         | 1/30 [00:00<00:10,  2.85it/s]
+  7%|6         | 2/30 [00:00<00:09,  2.95it/s]
+ 10%|#         | 3/30 [00:01<00:09,  2.97it/s]
+ 13%|#3        | 4/30 [00:01<00:10,  2.56it/s]
+ 17%|#6        | 5/30 [00:01<00:09,  2.67it/s]
+ 20%|##        | 6/30 [00:02<00:08,  2.83it/s]
+ 23%|##3       | 7/30 [00:02<00:07,  2.90it/s]
+ 27%|##6       | 8/30 [00:02<00:07,  2.99it/s]
+ 30%|###       | 9/30 [00:03<00:06,  3.05it/s]
+ 33%|###3      | 10/30 [00:03<00:06,  3.06it/s]
+ 37%|###6      | 11/30 [00:03<00:06,  3.04it/s]
+ 40%|####      | 12/30 [00:04<00:06,  2.81it/s]
+ 43%|####3     | 13/30 [00:04<00:05,  2.88it/s]
+ 47%|####6     | 14/30 [00:04<00:05,  2.94it/s]
+ 50%|#####     | 15/30 [00:05<00:05,  2.89it/s]
+ 53%|#####3    | 16/30 [00:05<00:04,  2.95it/s]
+ 57%|#####6    | 17/30 [00:05<00:04,  2.94it/s]
+ 60%|######    | 18/30 [00:06<00:04,  2.89it/s]
+ 63%|######3   | 19/30 [00:06<00:03,  2.93it/s]
+ 67%|######6   | 20/30 [00:06<00:03,  2.99it/s]
+ 70%|#######   | 21/30 [00:07<00:03,  2.98it/s]
+ 73%|#######3  | 22/30 [00:07<00:02,  2.95it/s]
+ 77%|#######6  | 23/30 [00:07<00:02,  2.98it/s]
+ 80%|########  | 24/30 [00:08<00:01,  3.01it/s]
+ 83%|########3 | 25/30 [00:08<00:01,  2.97it/s]
+ 87%|########6 | 26/30 [00:08<00:01,  2.97it/s]
+ 90%|######### | 27/30 [00:09<00:00,  3.05it/s]
+ 93%|#########3| 28/30 [00:09<00:00,  3.06it/s]
+ 97%|#########6| 29/30 [00:09<00:00,  3.06it/s]
+100%|##########| 30/30 [00:10<00:00,  3.05it/s]
+100%|##########| 30/30 [00:10<00:00,  2.95it/s]
+c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_2\temp_test.py:76: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  mlp.load_state_dict(torch.load(os.path.join(config['file_paths']['output_directory'], 'best_mlp.pth'), map_location=DEVICE))  # Load the model weights
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_2\temp_test.py", line 76, in <module>
+    mlp.load_state_dict(torch.load(os.path.join(config['file_paths']['output_directory'], 'best_mlp.pth'), map_location=DEVICE))  # Load the model weights
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Rohan\AppData\Local\Programs\Python\Python312\Lib\site-packages\torch\nn\modules\module.py", line 2584, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for MLP:
+	size mismatch for l1.weight: copying a param with shape torch.Size([100, 47]) from checkpoint, the shape in current model is torch.Size([128, 47]).
+	size mismatch for l1.bias: copying a param with shape torch.Size([100]) from checkpoint, the shape in current model is torch.Size([128]).
+	size mismatch for l2.weight: copying a param with shape torch.Size([100, 100]) from checkpoint, the shape in current model is torch.Size([128, 128]).
+	size mismatch for l2.bias: copying a param with shape torch.Size([100]) from checkpoint, the shape in current model is torch.Size([128]).
+	size mismatch for l3.weight: copying a param with shape torch.Size([5, 100]) from checkpoint, the shape in current model is torch.Size([5, 128]).

@@ -1,0 +1,7 @@
+
+
+Attempt 2 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_2\temp_test.py", line 72, in <module>
+    from training_code import MLP
+ModuleNotFoundError: No module named 'training_code'

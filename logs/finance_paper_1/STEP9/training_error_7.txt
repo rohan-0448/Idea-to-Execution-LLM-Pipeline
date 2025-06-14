@@ -1,0 +1,7 @@
+
+
+Attempt 7 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\finance_paper_1\temp_train.py", line 34, in <module>
+    raise ValueError("API key not found in config.yaml")
+ValueError: API key not found in config.yaml

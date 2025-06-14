@@ -1,0 +1,29 @@
+<role>"user"</role>
+<content>"Your task is to analyze the provided `log_report` and determine whether the training process of the model is converging or not.
+
+The following input is provided:
+- log_report: {log_report}
+
+*Task Overview*
+The log_report contains the standard output (stdout) from running the final training code. It includes details such as loss values, accuracy, and other training metrics that help assess the model's performance throughout the training process.
+
+*Instructions*
+1. **Convergence Check**: Carefully examine the log_report for key indicators of convergence. Look for the following signs:
+   - **Loss**: Is the loss value consistently decreasing over time? If the loss is decreasing and stabilizing, this is an indicator of convergence.
+   - **Accuracy**: Is the accuracy improving steadily? A stable or improving accuracy curve indicates that the model is learning effectively.
+   - **Gradient Stability**: Check for signs of exploding or vanishing gradients. If the gradients are stable, it suggests that the training process is stable.
+   - **Training Duration**: Does the training seem to be progressing without any unusual interruptions or extreme fluctuations?
+
+2. **Non-Convergence Indicators**: If the model is not converging, look for signs such as:
+   - **Loss Instability**: If the loss is fluctuating wildly or not decreasing over time, it may suggest issues such as poor hyperparameters, inadequate data preprocessing, or a problematic model architecture.
+   - **Accuracy Issues**: If accuracy is not improving or is erratic, this could indicate underfitting, overfitting, or a mismatch between the model and the task.
+   - **Other Warnings**: Are there any warnings, errors, or anomalies in the log that suggest problems with the training process (e.g., NaN values, excessively large gradients)?
+
+3. **Conclusion**: Based on your analysis, provide a conclusion on whether the model is converging or not. If it is not converging, suggest possible actions (e.g., hyperparameter tuning, model adjustments, better data handling).
+
+Formatting Instructions:
+- Focus on key points that indicate convergence or non-convergence.
+- Be specific with the details from the log_report.
+- Provide any relevant suggestions for improving the training process if convergence is not achieved.
+
+</content>

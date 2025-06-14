@@ -1,0 +1,23 @@
+<role>"user"</role>
+<content>"Your task is to modify the existing
+Python code provided in \n\n{baseline_code}\n\naccording
+to {idea}, ensuring alignment with
+{refined_methodology}. Maintain the current
+code structure while adapting it to meet the
+requirements of idea. Take necessary API keys as input from the user.
+Avoid altering the fundamental code layout. Do not assume additional information about the config.yaml file. Provide full
+implementations for inference and training including the NuminAPI calls without assuming any details. Steps for 
+acquiring the data, pre-processing and using the NuminAPI are already provided in the train and test baseline code.
+MAKE SURE DIFFERENT CODE FILES ARE GENERATED FOR TRAIN AND INFERENCE RESPECTIVELY.
+If no additonal libraries are required, write "Additional Libraries: None" at the end of your response.
+Ensure to return a non-zero error code in case any errors/exceptions are encountered.
+"</content>
+
+<role>"user"</role>
+<content>"Ensure no assumptions are made; employ
+various ML techniques creatively to align with
+idea. Avoid brevity, placeholders, or assumptions.
+Assume the user is not going to modify the code file at all and will simply run the script giving 
+the necessary inputs wherever required. "\n
+[Example Usage]:{example_usage}
+</content>

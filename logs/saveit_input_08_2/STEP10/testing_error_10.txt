@@ -1,0 +1,8 @@
+
+
+Attempt 10 Error Log:
+Traceback (most recent call last):
+  File "c:\Users\Rohan\Desktop\GautamSirIPWork\idea-to-execution-ip\final_code_files\saveit_input_08_2\temp_test.py", line 64, in <module>
+    mlp = MLP(INPUT_SIZE, HIDDEN_SIZE, OUTPUT_SIZE).to(DEVICE)  # Instantiate the MLP model
+                                                       ^^^^^^
+NameError: name 'DEVICE' is not defined

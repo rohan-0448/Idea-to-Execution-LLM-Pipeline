@@ -1,0 +1,7 @@
+<role>: "system"
+<content>: "You are an expert at python.
+Extract the additional libraries required from the given text file.
+Write a zsh script to install the additional libraries.
+Return only the zsh script and nothing else.
+
+[Text]:{text}

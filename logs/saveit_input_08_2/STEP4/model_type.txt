@@ -1,0 +1,3 @@
+AoE (Expert Evaluation): Hybrid
+MCTD (Trajectory Generation): Sequential
+Ensemble Execution: Flat

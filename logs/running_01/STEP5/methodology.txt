@@ -1,0 +1,89 @@
+Okay, here's a refined methodology incorporating the specifics of the Numin platform data, its structure, and the target variable transformation, as well as addressing specific limitations.
+
+**1. Introduce Method**
+
+The core idea is to leverage the Autonomy of Experts (AoE) framework in conjunction with either Monte Carlo Tree Diffusion (MCTD) or CodeMonkeys for enhanced algorithmic trading. AoE provides a dynamic ensemble approach, selecting and weighting trading strategies (experts) based on their self-assessed suitability and performance.  This is integrated with MCTD (for complex planning) or CodeMonkeys (for rapid strategy generation).
+
+**2. Establish Connections**
+
+The existing texts establish the theoretical basis for this hybrid approach.  AoE provides a robust framework for managing a diverse set of trading strategies. The data context defines the practical constraints and opportunities of implementing these strategies using the Numin platform. We will investigate whether using different training data influences the different results. This data is then saved into the training_data folder. For convenience, this data is already saved in the ./training_data and has naming convention as follows 'df_val_01-Apr-2024'.
+
+**3. Discuss Analysis**
+
+A crucial aspect of this methodology is the analysis of both the input features and the target variable. Understanding the characteristics of the features (their distributions, correlations, and relationships to the target) is essential for designing effective trading strategies and for the experts' self-assessment mechanisms.  The transformation of the target variable from [-1, 1] to [0, 4] implies a discretization of the original continuous target. The impact of this discretization on the model's ability to predict the underlying continuous value must be carefully considered. The id column, which contains the stock ID, must be handled appropriately, as it's a categorical variable. The other features are floats and must be preprocessed to ensure maximum model efficacy.
+
+**4. Discuss Sampling**
+
+The training and testing datasets downloaded from the Numin platform should be carefully analyzed.
+
+*   **Data Splitting:** It's important to split the available data into training, validation, and test sets. A temporal split (e.g., using earlier data for training and later data for testing) is recommended to simulate real-world trading conditions. It may be worthwhile to split the training data into subsets and investigate whether the different subsets influence performance.
+*   **Data Balance:** Check for any class imbalances in the transformed target variable (0 to 4). If significant imbalances exist, consider using techniques like oversampling minority classes or undersampling majority classes during training. The data is in csv format. The data is then imported using the pandas library and stored in a dataframe. The id column tells us about the stock id and is in the text format. The other features are float values. The last column in case of training data is the target variable. It is converted from the [-1,1] range to [0,4] using the formula y = [int(2 * (score_10 + 1)) for score_10 in y].
+
+**5. Address Limitations**
+
+*   **Data Limitations:** The dataset's limited feature set could restrict the complexity and effectiveness of the trading strategies. Since we don't have specifics about the features, we can't tailor them to the trading strategies that we might be interested in exploring. Do not assume any additional information about the features of the dataset.
+*   **Target Variable Discretization:** The target variable transformation is a form of information loss. This discretization might limit the precision of the model's predictions and its ability to capture subtle market movements. The fact that the transformation is `y = [int(2 * (score_10 + 1)) for score_10 in y]` indicates that there is information lost in the target variable during this conversion process.
+*   **API Access:** Reliance on the Numin platform's API introduces dependency and potential limitations in data availability and access speed.
+*   **Computational Cost:** MCTD, in particular, can be computationally expensive, especially when combined with a large number of experts.
+*   **Interpretability:** AoE can sometimes be a "black box," making it difficult to understand why certain experts are selected and how decisions are made. This is where the individual expert's self-assessment is critical.
+
+**Revised Methodology:**
+
+1.  **Data Acquisition and Preparation:**
+
+    *   **API Access:** Utilize API calls to the Numin platform to download historical market data. Ensure data includes at least price, volume, and date/time information.
+    *   **Data Exploration:** Perform exploratory data analysis (EDA) to understand the distribution of features and the target variable. Analyze time series properties (stationarity, seasonality) of the data.
+    *   **Feature Engineering:** Create relevant technical indicators (moving averages, RSI, MACD, etc.) based on the available data and domain knowledge. Add date-related features.
+    *   **Data Splitting:** Split the data into training, validation, and test sets using a temporal split. Consider the time horizon of the trading strategies when choosing the split point.
+    *   **Target Transformation:** Apply the target variable transformation: `y = [int(2 * (score_10 + 1)) for score_10 in y]`. Analyze the impact of this transformation on prediction accuracy.
+    *   **Data Scaling:** Scale numerical features using techniques like StandardScaler or MinMaxScaler to ensure that all features have a similar range.
+    *   **ID Column Handling:** Decide how to incorporate the ID column. One approach is to treat it as a categorical variable and use one-hot encoding or embedding. Another approach is to train separate models for each ID (stock), although this may be limited by the amount of data available per stock.
+
+2.  **Implementation of Base Algorithms:**
+
+    *   **MCTD:** Implement MCTD with appropriate state space, action space, and reward function definitions for the trading environment. Focus on efficient tree search algorithms.
+    *   **CodeMonkeys:** Design a flexible CodeMonkeys framework to generate a diverse range of trading strategies using different indicators, rules, and asset selections. Parallelize strategy generation and backtesting.
+
+3.  **Implementation of Autonomy of Experts (AoE):**
+
+    *   **Expert Self-Assessment:** Define a mechanism for each trading strategy to assess its suitability for current market conditions. The self-assessment can be based on internal signals, confidence levels, and risk metrics.
+    *   **Expert Selection:** Implement a selection process based on expert self-evaluations and historical performance. Use a ranking or weighting scheme.
+    *   **Dynamic Adjustment:** Implement dynamic adjustment mechanisms to adapt the ensemble of experts over time. Remove underperforming or high-risk experts, re-evaluate experts, and generate new strategies (in the case of CodeMonkeys).
+    *   **Resource Allocation:** Allocate capital proportionally to expert confidence and performance. Use a risk-adjusted approach to capital allocation.
+    *   **Risk Management:** Implement risk management at individual expert and ensemble levels. Use stop-loss orders, portfolio diversification, and other risk control techniques.
+
+4.  **Integration:** Integrate MCTD or CodeMonkeys with the AoE module.
+
+5.  **Training and Validation:**
+
+    *   Train the combined system on the training dataset.
+    *   Use the validation dataset to tune hyperparameters and optimize the performance of the AoE module and the base algorithms.
+    *   Employ appropriate regularization techniques to prevent overfitting.
+
+6.  **Backtesting:**
+
+    *   Thoroughly backtest the system on the held-out test dataset.
+    *   Simulate realistic trading conditions, including transaction costs and slippage.
+
+7.  **Performance Evaluation:**
+
+    *   Evaluate the performance of the hybrid approach using metrics like total return, Sharpe ratio, maximum drawdown, win rate, transaction costs, and Sortino ratio.
+    *   Analyze the performance of individual experts and the overall ensemble.
+
+8.  **Comparison:**
+
+    *   Compare the performance of the hybrid approach to the individual MCTD or CodeMonkeys algorithms.
+    *   Compare the performance to benchmark trading strategies (e.g., buy-and-hold).
+
+9.  **Sensitivity Analysis:**
+
+    *   Conduct a sensitivity analysis to assess the robustness of the system to changes in market conditions, hyperparameters, and data quality.
+    *   Test the system under different market regimes (e.g., bull markets, bear markets, high volatility).
+
+10. **Explainability and Interpretability:**
+
+    *   Develop methods to interpret the decisions made by the AoE module.
+    *   Analyze the characteristics of the experts that are selected under different market conditions.
+    *   Visualize the decision-making process of the system.
+
+This revised methodology addresses the limitations of the data context and emphasizes the importance of careful data analysis, feature engineering, and robust risk management. It also highlights the need for explainability and interpretability in the decision-making process of the hybrid system.
